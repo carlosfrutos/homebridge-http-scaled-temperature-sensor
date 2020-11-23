@@ -1,20 +1,21 @@
 {
-  "name": "homebridge-http-temperature-sensor",
-  "version": "1.0.9",
-  "description": "Http temperature sensor for Homebridge",
+  "name": "homebridge-http-scaled-temperature-sensor",
+  "version": "1.0.0",
+  "description": "Http temperature sensor for Homebridge with a scale factor to work with those sensors giving temperatures as integers (eg. 245 for 24.5 degrees)",
   "license": "ISC",
   "keywords": [
-    "homebridge-plugin"
+    "homebridge-plugin",
+    "temperature"
   ],
   "scripts": {
     "test": "echo no test specified"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Supereg/homebridge-http-temperature-sensor"
+    "url": "https://github.com/carlosfrutos/homebridge-http-scaled-temperature-sensor"
   },
   "bugs": {
-    "url": "https://github.com/Supereg/homebridge-http-temperature-sensor/issues"
+    "url": "https://github.com/carlosfrutos/homebridge-http-scaled-temperature-sensor/issues"
   },
   "engines": {
     "node": ">=10.17.0",

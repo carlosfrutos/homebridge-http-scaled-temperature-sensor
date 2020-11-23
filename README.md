@@ -1,4 +1,8 @@
-# homebridge-http-temperature-sensor Plugin
+# homebridge-http-scaled-temperature-sensor Plugin
+
+Repository forked from [homebridge-http-temperature-sensor](https://github.com/Supereg/homebridge-http-temperature-sensor) 
+to enable scaling the response from the temperature status endpoint. That is, some controllers give 22.5 degrees with a 
+value of 225. With this plugin you can control that response and scale it using a 0.1 scaling factor.
 
 This [Homebridge](https://github.com/nfarina/homebridge) plugin can be used integrate your temperature sensor which has a 
 http api into HomeKit.
@@ -7,29 +11,29 @@ http api into HomeKit.
 
 First of all you need to have [Homebridge](https://github.com/nfarina/homebridge) installed. Refer to the repo for 
 instructions.  
-Then run the following command to install `homebridge-http-temperature-sensor`
+Then run the following command to install `homebridge-http-scaled-temperature-sensor`
 
 ```
-sudo npm install -g homebridge-http-temperature-sensor
+sudo npm install -g homebridge-http-scaled-temperature-sensor
 ```
 
 ## Updating the temperature in HomeKit
 
 The _'CurrentTemperature'_ characteristic has the permission to `notify` the HomeKit controller of state 
-changes. `homebridge-http-temperature-sensor` supports two concepts to send temperature changes to HomeKit.
+changes. `homebridge-http-scaled-temperature-sensor` supports two concepts to send temperature changes to HomeKit.
 
 ### The 'pull' way:
 
-The 'pull' way is probably the easiest to set up and supported in every scenario. `homebridge-http-temperature-sensor` 
+The 'pull' way is probably the easiest to set up and supported in every scenario. `homebridge-http-scaled-temperature-sensor` 
 requests the temperature of the sensor in an specified interval (pulling) and sends the value to HomeKit.  
 Look for `pullInterval` in the list of configuration options if you want to configure it.
 
 ### The 'push' way:
 
-When using the 'push' concept, the http device itself sends the updated value to `homebridge-http-temperature-sensor` 
+When using the 'push' concept, the http device itself sends the updated value to `homebridge-http-scaled-temperature-sensor` 
 whenever values change. This is more efficient as the new value is updated instantly and 
-`homebridge-http-temperature-sensor` does not need to make needless requests when the value didn't actually change.  
-However because the http device needs to actively notify the `homebridge-http-temperature-sensor` there is more 
+`homebridge-http-scaled-temperature-sensor` does not need to make needless requests when the value didn't actually change.  
+However because the http device needs to actively notify the `homebridge-http-scaled-temperature-sensor` there is more 
 work needed to implement this method into your http device. 
 
 #### Using MQTT:
@@ -83,6 +87,9 @@ The configuration can contain the following properties:
     For configuration see [mqttObject](#mqttobject).
 
 - `debug` \<boolean\> **optional**: Enable debug mode and write more logs.
+
+* `scale` \<number\> **optional** \(Default: **1**\): Scale factor for the output value. Having a scale factor of 0.1 will convert 
+    a value of 225 to 22,5. This will be the value shown in Home Bridge.
 
 Below are two example configurations. One is using a simple string url and the other is using a simple urlObject.  
 Both configs can be used for a basic plugin configuration.
@@ -223,13 +230,13 @@ Below is an example of an mqttObject containing the basic properties for a tempe
 
 ## Notification Server
 
-`homebridge-http-temperature-sensor` can be used together with 
+`homebridge-http-scaled-temperature-sensor` can be used together with 
 [homebridge-http-notification-server](https://github.com/Supereg/homebridge-http-notification-server) in order to receive
 updates when the state changes at your external program. For details on how to implement those updates and how to 
 install and configure `homebridge-http-notification-server`, please refer to the 
 [README](https://github.com/Supereg/homebridge-http-notification-server) of the repository.
 
-Down here is an example on how to configure `homebridge-http-temperature-sensor` to work with your implementation of the 
+Down here is an example on how to configure `homebridge-http-scaled-temperature-sensor` to work with your implementation of the 
 `homebridge-http-notification-server`.
 
 ```json

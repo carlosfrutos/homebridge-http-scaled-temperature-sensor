@@ -19,7 +19,7 @@ module.exports = function (homebridge) {
 
     api = homebridge;
 
-    homebridge.registerAccessory("homebridge-http-temperature-sensor", "HTTP-TEMPERATURE", HTTP_TEMPERATURE);
+    homebridge.registerAccessory("homebridge-http-scaled-temperature-sensor", "HTTP-SCALED-TEMPERATURE", HTTP_SCALED_TEMPERATURE);
 };
 
 const TemperatureUnit = Object.freeze({
@@ -27,7 +27,7 @@ const TemperatureUnit = Object.freeze({
    Fahrenheit: "fahrenheit"
 });
 
-function HTTP_TEMPERATURE(log, config) {
+function HTTP_SCALED_TEMPERATURE(log, config) {
     this.log = log;
     this.name = config.name;
     this.debug = config.debug || false;
@@ -85,6 +85,15 @@ function HTTP_TEMPERATURE(log, config) {
         this.pullTimer.start();
     }
 
+    /** @namespace config.scale */
+    this.scale = 1;
+    if (config.scale) {
+        if (typeof config.scale === "number")
+            this.scale = config.scale;
+        else
+            this.log.warn("Property 'scale' must be a number! Using default value (1)!");
+    }
+
     /** @namespace config.notificationPassword */
     /** @namespace config.notificationID */
     notifications.enqueueNotificationRegistrationIfDefined(api, log, config.notificationID, config.notificationPassword, this.handleNotification.bind(this));
@@ -110,7 +119,7 @@ function HTTP_TEMPERATURE(log, config) {
     }
 }
 
-HTTP_TEMPERATURE.prototype = {
+HTTP_SCALED_TEMPERATURE.prototype = {
 
     identify: function (callback) {
         this.log("Identify requested!");
@@ -124,9 +133,9 @@ HTTP_TEMPERATURE.prototype = {
         const informationService = new Service.AccessoryInformation();
 
         informationService
-            .setCharacteristic(Characteristic.Manufacturer, "Andreas Bauer")
-            .setCharacteristic(Characteristic.Model, "HTTP Temperature Sensor")
-            .setCharacteristic(Characteristic.SerialNumber, "TS01")
+            .setCharacteristic(Characteristic.Manufacturer, "Andreas Bauer & Carlos Frutos")
+                .setCharacteristic(Characteristic.Model, "HTTP Scaled Temperature Sensor")
+                .setCharacteristic(Characteristic.SerialNumber, "STS01")
             .setCharacteristic(Characteristic.FirmwareRevision, packageJSON.version);
 
         return [informationService, this.homebridgeService];
@@ -139,7 +148,7 @@ HTTP_TEMPERATURE.prototype = {
             return;
         }
 
-        let value = body.value;
+        let value = body.value * this.scale;
         if (body.characteristic === "CurrentTemperature" && this.unit === TemperatureUnit.Fahrenheit)
             value = (value - 32) / 1.8;
 
@@ -173,7 +182,7 @@ HTTP_TEMPERATURE.prototype = {
             else {
                 let temperature;
                 try {
-                    temperature = utils.extractValueFromPattern(this.statusPattern, body, this.patternGroupToExtract);
+                    temperature = utils.extractValueFromPattern(this.statusPattern, body, this.patternGroupToExtract) * this.scale;
                 } catch (error) {
                     this.log("getTemperature() error occurred while extracting temperature from body: " + error.message);
                     callback(new Error("pattern error"));
