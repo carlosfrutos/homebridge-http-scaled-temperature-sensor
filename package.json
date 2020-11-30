@@ -1,6 +1,6 @@
 {
   "name": "homebridge-http-scaled-temperature-sensor",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Http temperature sensor for Homebridge with a scale factor to work with those sensors giving temperatures as integers (eg. 245 for 24.5 degrees)",
   "license": "ISC",
   "keywords": [
