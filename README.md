@@ -58,7 +58,7 @@ The configuration can contain the following properties:
 
 ##### Basic configuration options:
 
-* `accessory` \<string\> **required**: Defines the plugin used and must be set to **"HTTP-TEMPERATURE"** for this plugin.
+* `accessory` \<string\> **required**: Defines the plugin used and must be set to **"HTTP-SCALED-TEMPERATURE"** for this plugin.
 * `name` \<string\> **required**: Defines the name which is later displayed in HomeKit
 * `getUrl` \<string |  [urlObject](#urlobject)\> **required**: Defines the url (and other properties when using 
     and urlObject) to query the current temperature (in celsius) from the sensor. By default it expects the http server 
@@ -97,7 +97,7 @@ Both configs can be used for a basic plugin configuration.
 {
     "accessories": [
         {
-          "accessory": "HTTP-TEMPERATURE",
+          "accessory": "HTTP-SCALED-TEMPERATURE",
           "name": "Temperature Sensor",
           
           "getUrl": "http://localhost/api/getTemperature"
@@ -109,7 +109,7 @@ Both configs can be used for a basic plugin configuration.
 {
     "accessories": [
         {
-          "accessory": "HTTP-TEMPERATURE",
+          "accessory": "HTTP-SCALED-TEMPERATURE",
           "name": "Temperature Sensor",
           
           "getUrl": {
@@ -243,7 +243,7 @@ Down here is an example on how to configure `homebridge-http-scaled-temperature-
 {
     "accessories": [
         {
-          "accessory": "HTTP-TEMPERATURE",
+          "accessory": "HTTP-SCALED-TEMPERATURE",
           "name": "Temperature Sensor",
           
           "notificationID": "my-temperature-sensor",
